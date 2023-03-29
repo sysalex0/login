@@ -8,7 +8,5 @@ public class LittlePenguinApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LittlePenguinApplication.class, args);
-		System.out.println("CA");
 	}
-
 }
