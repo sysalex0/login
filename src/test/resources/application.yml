@@ -13,10 +13,10 @@ spring:
       ddl-auto: update
 
   rabbitmq:
-    host: login_mq
+    host: login-mq
     port: 5672
-    username: your_rabbitmq_username
-    password: your_rabbitmq_password
+    username: username
+    password: password
     listener:
       simple:
         default-requeue-rejected: false
