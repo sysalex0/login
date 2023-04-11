@@ -1,0 +1,34 @@
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  annotations:
+#    kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert
+#    kompose.version: 1.28.0 (c4137012e)
+#  creationTimestamp: null
+#  labels:
+#    io.kompose.service: login-db
+#  name: login-db
+#spec:
+##  type: NodePort
+#  ports:
+#    - port: 3306
+##      name: "3306"
+##      nodePort: 30000
+##      targetPort: 3306
+#  selector:
+#    io.kompose.service: login-db
+#  clusterIP: None
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: login-db
+spec:
+  #type: NodePort
+  ports:
+    - port: 3306
+      #targetPort: 3306
+      #nodePort: 31000
+  selector:
+    app: mysql
+  clusterIP: None
