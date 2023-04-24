@@ -24,11 +24,9 @@ kind: Service
 metadata:
   name: login-db
 spec:
-  #type: NodePort
   ports:
     - port: 3306
-      #targetPort: 3306
-      #nodePort: 31000
+      targetPort: 3306
   selector:
     io.kompose.service: login-db
   clusterIP: None
