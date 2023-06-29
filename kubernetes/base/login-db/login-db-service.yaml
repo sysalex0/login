@@ -29,4 +29,3 @@ spec:
       targetPort: 3306
   selector:
     io.kompose.service: login-db
-  clusterIP: None
