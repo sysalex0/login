@@ -1,65 +1,96 @@
-# [Login Microservice PRD](<>)
+# Login Microservice PRD
 
 
 ## Overview
-The login microservice is a simple and efficient microservice that provides [user authentication](<>) and authorization.
+The login microservice is a simple and efficient microservice that provides user authentication and authorization.
 
 
 ## Features and Requirements
 The microservice should implement the following core features:
-- [User registration](<>): The microservice should allow new users to create an account and store their information in the database.
-- [User](<>) authentication: The microservice should provide a secure and reliable method for authenticating users using [JWT](<>).
-- [Password reset](<>): The microservice should allow users to reset their password if they forget it or need to change it.
+- User registration: The microservice should allow new users to create an account and store their information in the database.
+- User authentication: The microservice should provide a secure and reliable method for authenticating users using JWT.
+- Password reset: The microservice should allow users to reset their password if they forget it or need to change it.
 - Security: The microservice should implement appropriate security measures, such as encryption and access control, to protect user data and prevent unauthorized access.
 
 
 ### User Interface
 The login microservice will have a simple user interface that allows users to register, log in, and reset their password.
 
-## [API](<>) and Integration
-The [login microservice API](<>) will use [RESTful endpoints](<>) and [JSON data](<>) format. The microservice will integrate with other systems using HTTP or [HTTPS protocols](<>).
+## API and Integration
+The login microservice API will use RESTful endpoints and JSON data format. The microservice will integrate with other systems using HTTP or HTTPS protocols.
 
 
 ## Testing and Quality Assurance
-The login microservice will undergo [unit testing](<>) and [integration testing](<>) to ensure that it meets the functional and non-functional requirements. The microservice will also undergo security testing to identify and mitigate potential security vulnerabilities.
+The login microservice will undergo unit testing and integration testing to ensure that it meets the functional and non-functional requirements. The microservice will also undergo security testing to identify and mitigate potential security vulnerabilities.
 
 
 ## Deployment and Maintenance
-The login microservice will be deployed using Docker containers and managed using [Kubernetes](<>). The microservice will be monitored for performance and availability using monitoring tools like [Prometheus](<>) and [Grafana](<>). Security patches and updates will be applied regularly to ensure the microservice is secure and up-to-date.By using RabbitMQ as the [message broker](<>), the login microservice can process login and authentication requests asynchronously, improve scalability and performance, and ensure that the microservice meets the requirements for user authentication and authorization.
+The login microservice will be deployed using Docker containers and managed using Kubernetes. The microservice will be monitored for performance and availability using monitoring tools like Prometheus and Grafana. Security patches and updates will be applied regularly to ensure the microservice is secure and up-to-date.By using RabbitMQ as the message broker, the login microservice can process login and authentication requests asynchronously, improve scalability and performance, and ensure that the microservice meets the requirements for user authentication and authorization.
 
-## [Technology Stack](<>)
+## Technology Stack
 The login microservice will be implemented using the following technologies:
-- [Java](<>): Programming language
-- [Spring Boot](<>): Framework for building microservices
-- [Spring Security](<>): [Security framework](<>) for Java
-- JWT (JSON [Web Tokens](<>)): Token-based [authentication mechanism](<>)
-- [Hibernate](<>): Object-Relational Mapping (ORM) framework for Java
-- [MySQL](<>): [Relational database management](<>) system
-- [Gradle](<>) or [Maven](<>): Build tools for Java
-- RabbitMQ: [Message queue technology](<>) for asynchronous processing of login and [authentication requests](<>)
+- Java: Programming language
+- Spring Boot: Framework for building microservices
+- Spring Security: Security framework for Java
+- JWT (JSON Web Tokens): Token-based authentication mechanism
+- Hibernate: Object-Relational Mapping (ORM) framework for Java
+- MySQL: Relational database management system
+- Gradle or Maven: Build tools for Java
+- RabbitMQ: Message queue technology for asynchronous processing of login and authentication requests
 
 ## Get started
-1. Start kubernetes local cluster 
+1. Start kubernetes local cluster in docker
     ```shell
-    minikube start
+    minikube start --driver=docker
     ```
-2. create service, pods, etc
+2. [Windows Only] Allow Kubernetes read your local docker repository
+
+   Run this command to set ENV variable in your current shell
+   ```
+   minikube docker-env
+   ```
+   Execute the last line command from the result, to apply the changes according to the ENV variables
+   The command should like
+   ```
+   @FOR /f "tokens=*" %i IN ('minikube -p minikube docker-env --shell cmd') DO @%i
+   ```
+   Verify the effect by running `docker image ls` and `minikube image ls`, they should show the same images.
+   When you want to switch it back to local docker repository, simply restart the shell. As the ENV variables will drop after restart.
+
+3. Build image to minikube's image registry
+   ```shell
+   mvnw compile jib:dockerBuild  
+   ```
+4. create service, pods, etc
     ```bash
     kubectl apply -R -f kubernetes/
     ```
-3. healthcheck
+5. healthcheck
    ```shell
     kubectl get all
     ```
 
-## Access through host machine locahost
+## Access service(s) through host machine locahost
+### 2 ways to do so
 1. port forward kubernetes service port to localhost port for accessing db
-    ```shell
-    kubectl port-forward svc/login-db 31000:3306
     ```
+    kubectl port-forward svc/[service_name] [host_machine_port]:[service_cluster_ip_port]
+    ```
+   ``` SHELL
+    kubectl port-forward svc/login-app 30000:10000
+    kubectl port-forward svc/login-db 31000:10001
+    ```
+2. Using minikube command to get the URL from 
+   ```shell
+   minikube service [service_name] --url
+   ```
 
 
-readme generated by: https://mr0grog.github.io/google-docs-to-markdown/
+# Useful links
+Event driven auth service reference
 
-Useful links
 https://medium.com/peerone-technology-%E7%9A%AE%E5%81%B6%E7%8E%A9%E4%BA%92%E5%8B%95%E7%A7%91%E6%8A%80/%E5%9F%BA%E6%96%BC-event-driven-architecture-%E7%82%BA%E5%BE%AE%E6%9C%8D%E5%8B%99%E6%9E%B6%E6%A7%8B%E6%89%93%E9%80%A0-auth-service-a81aac364b21
+
+Readme content generated by chatGPT and the format generated by 
+
+https://mr0grog.github.io/google-docs-to-markdown/

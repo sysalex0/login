@@ -3,15 +3,16 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://login-db:3306/login?allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
+#    database config is overridden by login-app-deployment.yaml, for local docker-compose testing only
+#    url: jdbc:mysql://login-db:3306/login?allowPublicKeyRetrieval=true&useSSL=false
+#    username: root
+#    password: password
+#    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
+      # [dev only] config for create table by annotation
       ddl-auto: update
+    show-sql: true
 
   rabbitmq:
     host: login_mq

@@ -1,71 +1,22 @@
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  annotations:
-#    kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert
-#    kompose.version: 1.28.0 (c4137012e)
-#  creationTimestamp: null
-#  labels:
-#    io.kompose.service: login-db
-#  name: login-db
-#spec:
-#  replicas: 1
-#  selector:
-#    matchLabels:
-#      io.kompose.service: login-db
-#  strategy:
-#    type: Recreate
-#  template:
-#    metadata:
-#      annotations:
-#        kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert
-#        kompose.version: 1.28.0 (c4137012e)
-#      creationTimestamp: null
-#      labels:
-#        io.kompose.network/login-penguin-network: "true"
-#        io.kompose.service: login-db
-#    spec:
-#      containers:
-#        - env:
-#            - name: MYSQL_DATABASE
-#              value: login
-#            - name: MYSQL_ROOT_PASSWORD
-#              value: password
-#          image: mysql:8.0
-#          name: login-db
-#          ports:
-#            - containerPort: 3306
-#          resources: {}
-#          volumeMounts:
-#            - mountPath: /var/lib/mysql
-#              name: mysql-data
-#      restartPolicy: Always
-#      volumes:
-#        - name: mysql-data
-#          persistentVolumeClaim:
-#            claimName: mysql-data
-#status: {}
-
 apiVersion: apps/v1
 kind: Deployment
+# provide important information of a resource
 metadata:
-  name: login-db
+  name: login-db-deployment
+# define specs for resource under this
 spec:
-  selector:
-    matchLabels:
-      io.kompose.service: login-db
   strategy:
     type: Recreate
+  # the config of each pod
   template:
     metadata:
       labels:
-        io.kompose.service: login-db
+        login.service: login-db
     spec:
       containers:
         - image: mysql:8.0
           name: login-db
           env:
-            # Use secret in real usage
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -78,7 +29,6 @@ spec:
                   key: login-db-schema
           ports:
             - containerPort: 3306
-              name: login-db
           volumeMounts:
             - name: mysql-data
               mountPath: /var/lib/mysql
@@ -86,3 +36,6 @@ spec:
         - name: mysql-data
           persistentVolumeClaim:
             claimName: mysql-data
+  selector:
+    matchLabels:
+      login.service: login-db

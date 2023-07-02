@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+# provide important information of a resource
+metadata:
+  name: login-app-deployment
+# define specs for resource under this
+spec:
+  # in the replica set, how many pods
+  replicas: 1
+  # the config of each pod in the replica set
+  template:
+    metadata:
+      labels:
+        login.service: login-app
+    spec:
+      containers:
+        - image: login-app:latest
+          name: login-app
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: login-app-config-map
+                  key: SPRING_DATASOURCE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: login-app-secret
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: login-app-secret
+                  key: SPRING_DATASOURCE_PASSWORD
+            - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
+              value: com.mysql.cj.jdbc.Driver
+  # select group of pods to apply the above deployment rules
+  selector:
+    matchLabels:
+      login.service: login-app
