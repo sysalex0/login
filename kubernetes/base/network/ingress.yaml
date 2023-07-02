@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: login-app-ingress
+  annotations:
+    # this annotation rewrite the URL being forward to dedicated service
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          # URL path pattern being forward to k8s service
+          - path: /internal/api(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: login-app-service
+                port:
+                  number: 10000
