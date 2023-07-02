@@ -95,6 +95,8 @@ The login microservice will be implemented using the following technologies:
 ### K8s structure using ingress --> service --> deployment in local
 https://alankrantas.medium.com/%E7%AD%86%E8%A8%98-%E5%9C%A8%E6%9C%AC%E6%A9%9F-kubernetes-%E7%92%B0%E5%A2%83%E4%BD%88%E7%BD%B2%E5%AE%B9%E5%99%A8%E4%B8%A6%E4%B8%B2%E6%8E%A5%E6%9C%8D%E5%8B%99-ingress-%E4%BC%BA%E6%9C%8D%E5%99%A8-%E4%BD%BF%E7%94%A8-minikube-%E8%88%87%E5%96%AE%E4%B8%80-yaml-%E6%AA%94%E5%AF%A6%E4%BD%9C-1d25228e6416
 
+### K8s yaml explain in details with example, including ingress, service, deployment, pod
+https://cwhu.medium.com/kubernetes-implement-ingress-deployment-tutorial-7431c5f96c3e
 
 ## Application Desgin 
 ### Event driven auth service reference
